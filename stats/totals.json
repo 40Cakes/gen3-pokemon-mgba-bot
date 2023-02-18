@@ -1,0 +1,13 @@
+{
+    "pokemon": {},
+    "shiny_log": [],
+    "totals": {
+        "current_streak_non_shiny": 0,
+        "longest_streak_non_shiny": 0,
+        "lowest_shiny_value_phase": 65535,
+        "lowest_shiny_value_phase_pokemon": "",
+        "non_shiny": 0,
+        "shiny_caught": 0,
+        "shiny_seen": 0
+    }
+}

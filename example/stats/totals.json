@@ -1,0 +1,303 @@
+{
+    "pokemon": {
+        "Abra": {
+            "non_shiny": 415,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Cascoon": {
+            "non_shiny": 474,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Lotad": {
+            "non_shiny": 33829,
+            "shiny_caught": 4,
+            "shiny_seen": 4
+        },
+        "Marill": {
+            "non_shiny": 1783,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Mudkip": {
+            "non_shiny": 29082,
+            "shiny_caught": 1,
+            "shiny_seen": 1
+        },
+        "Nincada": {
+            "non_shiny": 852,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Poochyena": {
+            "non_shiny": 56950,
+            "shiny_caught": 7,
+            "shiny_seen": 7
+        },
+        "Ralts": {
+            "non_shiny": 6734,
+            "shiny_caught": 1,
+            "shiny_seen": 1
+        },
+        "Seedot": {
+            "non_shiny": 1627,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Shroomish": {
+            "non_shiny": 621,
+            "shiny_caught": 1,
+            "shiny_seen": 1
+        },
+        "Silcoon": {
+            "non_shiny": 493,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Skitty": {
+            "non_shiny": 85,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Slakoth": {
+            "non_shiny": 208,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Taillow": {
+            "non_shiny": 1856,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Whismur": {
+            "non_shiny": 1068,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Wingull": {
+            "non_shiny": 931,
+            "shiny_caught": 0,
+            "shiny_seen": 0
+        },
+        "Wurmple": {
+            "non_shiny": 53375,
+            "shiny_caught": 1,
+            "shiny_seen": 1
+        },
+        "Zigzagoon": {
+            "non_shiny": 25067,
+            "shiny_caught": 3,
+            "shiny_seen": 3
+        }
+    },
+    "shiny_log": [
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 101",
+            "pokemon": "Mudkip",
+            "time_encountered": "2023-01-05 20:55:06.647131",
+            "total_encounters": 29083,
+            "total_shiny_encounters": 1,
+            "total_species_encounters": 29083,
+            "total_species_shiny_encounters": 1
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Ralts",
+            "time_encountered": "2023-01-06 04:34:43.913765",
+            "total_encounters": 30604,
+            "total_shiny_encounters": 2,
+            "total_species_encounters": 55,
+            "total_species_shiny_encounters": 1
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Zigzagoon",
+            "time_encountered": "2023-01-07 12:35:31.187643",
+            "total_encounters": 36757,
+            "total_shiny_encounters": 3,
+            "total_species_encounters": 1142,
+            "total_species_shiny_encounters": 1
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Poochyena",
+            "time_encountered": "2023-01-07 15:20:26.565243",
+            "total_encounters": 37375,
+            "total_shiny_encounters": 4,
+            "total_species_encounters": 2574,
+            "total_species_shiny_encounters": 1
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Zigzagoon",
+            "time_encountered": "2023-01-12 14:16:57.702755",
+            "total_encounters": 57401,
+            "total_shiny_encounters": 5,
+            "total_species_encounters": 4180,
+            "total_species_shiny_encounters": 2
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Lotad",
+            "time_encountered": "2023-01-28 08:37:19.337774",
+            "total_encounters": 120088,
+            "total_shiny_encounters": 6,
+            "total_species_encounters": 16451,
+            "total_species_shiny_encounters": 1
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Lotad",
+            "time_encountered": "2023-01-29 14:08:05.519657",
+            "total_encounters": 125636,
+            "total_shiny_encounters": 7,
+            "total_species_encounters": 17610,
+            "total_species_shiny_encounters": 2
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Poochyena",
+            "time_encountered": "2023-01-30 17:10:07.034333",
+            "total_encounters": 130672,
+            "total_shiny_encounters": 8,
+            "total_species_encounters": 31347,
+            "total_species_shiny_encounters": 2
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Poochyena",
+            "time_encountered": "2023-01-31 00:25:35.415341",
+            "total_encounters": 132100,
+            "total_shiny_encounters": 9,
+            "total_species_encounters": 31768,
+            "total_species_shiny_encounters": 3
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Petalburg Woods",
+            "pokemon": "Shroomish",
+            "time_encountered": "2023-02-01 22:08:46.845311",
+            "total_encounters": 141391,
+            "total_shiny_encounters": 10,
+            "total_species_encounters": 294,
+            "total_species_shiny_encounters": 1
+        },
+        {
+            "caught": false,
+            "escaped": true,
+            "location": "Route 102",
+            "pokemon": "Poochyena",
+            "time_encountered": "2023-02-06 01:14:47.425727",
+            "total_encounters": 159106,
+            "total_shiny_encounters": 11,
+            "total_species_encounters": 39933,
+            "total_species_shiny_encounters": 4
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Poochyena",
+            "time_encountered": "2023-02-08 14:08:22.319558",
+            "total_encounters": 173559,
+            "total_shiny_encounters": 12,
+            "total_species_encounters": 44322,
+            "total_species_shiny_encounters": 5
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Poochyena",
+            "time_encountered": "2023-02-10 01:25:22.961773",
+            "total_encounters": 181905,
+            "total_shiny_encounters": 13,
+            "total_species_encounters": 46862,
+            "total_species_shiny_encounters": 6
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Wurmple",
+            "time_encountered": "2023-02-12 17:05:44.839991",
+            "total_encounters": 196873,
+            "total_shiny_encounters": 14,
+            "total_species_encounters": 48646,
+            "total_species_shiny_encounters": 1
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Lotad",
+            "time_encountered": "2023-02-13 05:00:43.098483",
+            "total_encounters": 199692,
+            "total_shiny_encounters": 15,
+            "total_species_encounters": 31123,
+            "total_species_shiny_encounters": 3
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Poochyena",
+            "time_encountered": "2023-02-13 13:43:43.540114",
+            "total_encounters": 201762,
+            "total_shiny_encounters": 16,
+            "total_species_encounters": 52818,
+            "total_species_shiny_encounters": 7
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Zigzagoon",
+            "time_encountered": "2023-02-14 15:16:16.616085",
+            "total_encounters": 207807,
+            "total_shiny_encounters": 17,
+            "total_species_encounters": 24341,
+            "total_species_shiny_encounters": 3
+        },
+        {
+            "caught": true,
+            "escaped": false,
+            "location": "Route 102",
+            "pokemon": "Lotad",
+            "time_encountered": "2023-02-15 00:48:43.731649",
+            "total_encounters": 210123,
+            "total_shiny_encounters": 18,
+            "total_species_encounters": 33239,
+            "total_species_shiny_encounters": 4
+        }
+    ],
+    "totals": {
+        "current_streak_non_shiny": 5345,
+        "longest_streak_non_shiny": 62686,
+        "lowest_shiny_value_phase": 29,
+        "lowest_shiny_value_phase_pokemon": "Poochyena",
+        "non_shiny": 215450,
+        "shiny_caught": 18,
+        "shiny_seen": 18
+    }
+}
