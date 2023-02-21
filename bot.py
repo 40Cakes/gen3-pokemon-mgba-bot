@@ -15,6 +15,7 @@ from PIL import Image
 from rich.console import Console
 
 # General Config
+verbose_logging = False
 mgba_version = "0.10.0" # This is just used to find the mGBA window
 mgba_frame_size = 1 # mGBA > Audio/Video > Frame size (note: smaller game window = faster image detection)
 mgba_speed = 1 # mGBA > Emulation > Fast forward speed (warning: may become unstable at higher speeds + diminishing returns on image detection speeds)
@@ -75,7 +76,7 @@ def read_file(file: str): # Function to read data from a file
     if os.path.isfile(file):
         with open(file, mode="r", encoding="utf-8") as open_file:
             file_data = open_file.read()
-            console.log(f"Reading [bold blue]'{file}'[/] ([bold green]{round((time.time() - start_time)*1000, 3)}ms[/])")
+            if verbose_logging: console.log(f"Reading [bold blue]'{file}'[/] ([bold green]{round((time.time() - start_time)*1000, 3)}ms[/])")
             return file_data
     else:
         console.log(f"[red bold blink]Failed to open '{file}'![/]")
@@ -86,7 +87,7 @@ def write_file(file: str, value: str): # Function to set a value in a file
     try:
         with open(file, mode="w", encoding="utf-8") as save_file:
             save_file.write(value)
-            console.log(f"Writing [bold blue]'{file}'[/] ([bold green]{round((time.time() - start_time)*1000, 3)}ms[/])")
+            if verbose_logging: console.log(f"Writing [bold blue]'{file}'[/] ([bold green]{round((time.time() - start_time)*1000, 3)}ms[/])")
     except:
         console.log(f"[red bold blink]Failed to update file '{file}'![/]")
 
@@ -102,7 +103,7 @@ def find_image(file: str): # Function to find an image in mGBA
         locate = pyautogui.locateOnScreen(image, region=mgba_region)
     except:
         locate = None
-    console.log(f"Searching for [bold blue]'{file}'[/] on-screen ([bold green]{round((time.time() - start_time)*1000, 3)}ms[/])")
+    if verbose_logging: console.log(f"Searching for [bold blue]'{file}'[/] on-screen ([bold green]{round((time.time() - start_time)*1000, 3)}ms[/])")
     return locate
 
 def press_key(key: str): # Function to pass single input to mGBA
@@ -110,7 +111,7 @@ def press_key(key: str): # Function to pass single input to mGBA
     pyautogui.keyUp(key)
 
 def press_key_combo(keys: list, delay: int = None): # Function to pass key combo to mGBA
-    console.log(f"Pressing key combo: [bold orange1]{[x for x in keys]}[/]...")
+    if verbose_logging: console.log(f"Pressing key combo: [bold orange1]{[x for x in keys]}[/]...")
     for key in keys:
         pyautogui.keyDown(key)
     if delay:
@@ -119,7 +120,7 @@ def press_key_combo(keys: list, delay: int = None): # Function to pass key combo
         pyautogui.keyUp(key)
 
 def key_sequence(sequence: list): # Function to run a sequence of keys to mGBA
-    console.log(f"Pressing key sequence [bold orange1]{[x for x in sequence]}[/]...")
+    if verbose_logging: console.log(f"Pressing key sequence [bold orange1]{[x for x in sequence]}[/]...")
     sleep_pattern = "^\d*\.?\d*sec$"
 
     for key in sequence:
@@ -438,7 +439,7 @@ def run_to_pos(run: bool = True, x: int = -1, y: int = -1, new_map_bank: int = -
         end_pos = x
 
     def target_pos():
-        console.log(f"Running to coord: [cyan bold]{end_pos}[/]")
+        if verbose_logging: (f"Running to coord: [cyan bold]{end_pos}[/]")
         if end_pos < player_info[axis]:
             pyautogui.keyDown(directions[0])
             return False
@@ -643,7 +644,7 @@ def get_player_info(save: bool = False): # Function to update the player.json fi
         player = yaml.load(read_file(f"{mgba_lua_dir}player.yml"), Loader=yaml.Loader)
         if save:
             write_file("stats/player.json", json.dumps(player["player"][0], indent=4, sort_keys=True))
-        console.log(f"X: [cyan bold]{player['player'][0]['posX']}[/], Y: [cyan bold]{player['player'][0]['posY']}[/], Map bank: [cyan bold]{player['player'][0]['mapBank']}[/], Map ID: [cyan bold]{player['player'][0]['mapId']}[/]")
+        if verbose_logging or (bot_config["method"] == "Manual Mode"): console.log(f"X: [cyan bold]{player['player'][0]['posX']}[/], Y: [cyan bold]{player['player'][0]['posY']}[/], Map bank: [cyan bold]{player['player'][0]['mapBank']}[/], Map ID: [cyan bold]{player['player'][0]['mapId']}[/]")
         return player["player"][0]
     except:
         return False
@@ -699,7 +700,10 @@ def identify_pokemon(starter: bool = False): # Loop to identify opponent pokemon
     else:
         pokemon = get_opponent_info()
 
-    console.log(pokemon)
+    if verbose_logging: console.log(pokemon)
+    console.log(f"Encountered a [yellow]{pokemon['name']}[/] at {pokemon['metLocationName']}")
+    console.log(f"HP: {pokemon['hpIV']} | ATK: {pokemon['attackIV']} | DEF: {pokemon['defenseIV']} | SPATK: {pokemon['spAttackIV']} | SPDEF: {pokemon['spDefenseIV']} | SPE: {pokemon['speed']}")
+    console.log(f"Shiny Value: {pokemon['shinyNum']} (is {pokemon['shinyNum']} < 8 = {pokemon['shiny']})")
 
     caught = False
     stats = json.loads(read_file("stats/totals.json")) # Open totals stats file
@@ -732,7 +736,7 @@ def identify_pokemon(starter: bool = False): # Loop to identify opponent pokemon
         write_file("stats/totals.json", json.dumps(stats, indent=4, sort_keys=True))
 
     else:
-        console.rule("[bold blue]Non shiny detected...[/]", style="blue")
+        console.rule("[bold red]Non shiny detected...[/]", style="red")
 
         stats["pokemon"][pokemon["name"]]["non_shiny"] += 1
         stats["totals"]["non_shiny"] += 1
@@ -754,6 +758,9 @@ def identify_pokemon(starter: bool = False): # Loop to identify opponent pokemon
 
 # Prepare script before main loop
 console = Console(log_path=False, log_time=False) # Set up rich console object
+console.rule("[bold green]Starting bot!", style="green")
+console.log(f"Mode: {bot_config['method']}")
+
 item_list = json.loads(read_file("data/items.json"))
 location_list = json.loads(read_file("data/locations.json"))
 move_list = json.loads(read_file("data/moves.json"))
@@ -795,6 +802,7 @@ w.find_window_wildcard(window_regexp)
 w.set_foreground()
 w.get_rectangle()
 mgba_region = (w._rect[0],w._rect[1],(240*mgba_frame_size)+mgba_x_padding,(160*mgba_frame_size)+mgba_y_padding)
+console.log(f"mGBA region: {mgba_region} (ensure the entire mGBA window is captured in debug/mgba_region.png)")
 
 if not os.path.exists("debug"):
     os.makedirs("debug")
@@ -826,6 +834,7 @@ while True:
 
         # 🌸 Sweet scent method
         if bot_config["method"] == "Sweet Scent":
+            console.log(f"Using Sweet Scent...")
             start_menu("pokemon")
             key_sequence([mgba_controls["a"]]) # Select first pokemon in party
             while find_image("states/sweet_scent.png") == None: # Search for sweet scent in menu
@@ -836,17 +845,24 @@ while True:
 
         # 🏃‍♂️🏄‍♂️ Running/surfing method
         if "Running/Surfing" in bot_config["method"]:
+            console.log(f"Running...")
             while opponent_changed() == False:
                 try:
                     if (args.c1 != None) and (args.c2 != None):
                         if "Up/Down" in bot_config["method"]:
+                            console.log(f"Running to {args.c1}...")
                             while not run_to_pos(y=args.c1, run=True): identify_pokemon()
+                            console.log(f"Running to {args.c2}...")
                             while not run_to_pos(y=args.c2, run=True): identify_pokemon()
                         elif "Left/Right" in bot_config["method"]:
+                            console.log(f"Running to {args.c1}...")
                             while not run_to_pos(x=args.c1, run=True): identify_pokemon()
+                            console.log(f"Running to {args.c2}...")
                             while not run_to_pos(x=args.c2, run=True): identify_pokemon()
                     else:
+                        console.log(f"Running {action_1}...")
                         walk_until_obstructed(action_1, run=True)
+                        console.log(f"Running {action_2}...")
                         walk_until_obstructed(action_2, run=True)
                 except:
                     pass
@@ -855,6 +871,7 @@ while True:
 
         # 🐠 Fishing method
         if bot_config["method"] == "Fishing":
+            console.log(f"Fishing...")
             player_info = get_player_info()
             press_key(mgba_controls["select"])
             while opponent_changed() == False or player_info["state"] != 80: # State 80 = overworld
@@ -868,11 +885,13 @@ while True:
 
         # ➕ Starters soft reset method
         if bot_config["method"] == "Starters":
+            console.log(f"Soft resetting starter Pokemon...")
             player_info = get_player_info()
             while player_info["state"] != 80: # State 80 = overworld
                 player_info = get_player_info()
                 key_sequence([mgba_controls["a"], "0.5sec"])
             time.sleep(0.5/mgba_speed) # Allow time for title menu fade in
+            console.log(f"Waiting for {rng_wait}s before opening bag (Emerald RNG is bad)...")
             key_sequence([f"{rng_wait}sec", mgba_controls["a"], "1sec"]) # Wait for precise time before selecting bag (Emerald broken RNG)
             if bot_config["starter_pokemon"] == "Mudkip":
                 key_sequence([mgba_controls["right"], "0.1sec", mgba_controls["a"]])
@@ -888,14 +907,11 @@ while True:
                     if identify_pokemon(starter=True):
                         sys.exit() # Kill script and wait for manual intervention to manually catch the shiny starter
                     else:
-                        if rng_wait < 10: # Reset RNG wait if length is over 10s
-                            rng_wait += round(random.uniform(0.014/mgba_speed, 0.018/mgba_speed), 3) # Roughly 1 frame with a bit of random variance
-                        else:
-                            rng_wait = 0.000
+                        rng_wait += round(random.uniform(0.02/mgba_speed, 0.025/mgba_speed), 3) # Roughly 1 frame with a bit of random variance
                         rng_wait = round(rng_wait, 3)
                         press_key_combo(mgba_controls["reset_emu"])
                         break
 
     else:
-        console.log("[red bold]mGBA window is not focused![/]")
+        console.rule("[red bold]mGBA window is not focused![/]", style="red")
         time.sleep(0.5)
