@@ -795,6 +795,9 @@ w.find_window_wildcard(window_regexp)
 w.set_foreground()
 w.get_rectangle()
 mgba_region = (w._rect[0],w._rect[1],(240*mgba_frame_size)+mgba_x_padding,(160*mgba_frame_size)+mgba_y_padding)
+
+if not os.path.exists("debug"):
+    os.makedirs("debug")
 pyautogui.screenshot("debug/mgba_region.png", region=mgba_region)
 
 # 🔁 Main loop
