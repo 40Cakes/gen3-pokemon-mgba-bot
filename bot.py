@@ -868,8 +868,11 @@ while True:
 
         # ➕ Starters soft reset method
         if bot_config["method"] == "Starters":
-            while find_image("states/starter_bag_boy.png") == None and find_image("states/starter_bag_girl.png") == None: # Press A until the character is standing next to the starter bag
+            player_info = get_player_info()
+            while player_info["state"] != 80: # State 80 = overworld
+                player_info = get_player_info()
                 key_sequence([mgba_controls["a"], "0.5sec"])
+            time.sleep(0.5/mgba_speed) # Allow time for title menu fade in
             key_sequence([f"{rng_wait}sec", mgba_controls["a"], "1sec"]) # Wait for precise time before selecting bag (Emerald broken RNG)
             if bot_config["starter_pokemon"] == "Mudkip":
                 key_sequence([mgba_controls["right"], "0.1sec", mgba_controls["a"]])
@@ -881,16 +884,17 @@ while True:
             press_key(mgba_controls["a"]) # Press A to select starter 
 
             while True:
-                if identify_pokemon(starter=True):
-                    sys.exit() # Kill script and wait for manual intervention to manually catch the shiny starter
-                else:
-                    if rng_wait < 10: # Reset RNG wait if length is over 10s
-                        rng_wait += round(random.uniform(0.014/mgba_speed, 0.018/mgba_speed), 3) # Roughly 1 frame with a bit of random variance
+                if (get_party_info(index=1) != False):
+                    if identify_pokemon(starter=True):
+                        sys.exit() # Kill script and wait for manual intervention to manually catch the shiny starter
                     else:
-                        rng_wait = 0.000
-                    rng_wait = round(rng_wait, 3)
-                    press_key_combo(mgba_controls["reset_emu"])
-                    break
+                        if rng_wait < 10: # Reset RNG wait if length is over 10s
+                            rng_wait += round(random.uniform(0.014/mgba_speed, 0.018/mgba_speed), 3) # Roughly 1 frame with a bit of random variance
+                        else:
+                            rng_wait = 0.000
+                        rng_wait = round(rng_wait, 3)
+                        press_key_combo(mgba_controls["reset_emu"])
+                        break
 
     else:
         console.log("[red bold]mGBA window is not focused![/]")
