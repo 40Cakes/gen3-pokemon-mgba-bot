@@ -19,8 +19,8 @@ mgba_version = "0.10.0" # This is just used to find the mGBA window
 mgba_frame_size = 1 # mGBA > Audio/Video > Frame size (note: smaller game window = faster image detection)
 mgba_speed = 1 # mGBA > Emulation > Fast forward speed (warning: may become unstable at higher speeds + diminishing returns on image detection speeds)
 mgba_lua_dir = "C:/Temp/" # The directory that mgba_helper.lua script is writing to
-mgba_x_padding = 10 # Adds x pixels to the mGBA window width, "debug/mgba_region.png" is generated at script run time to help tune, make sure the entire mGBA window is visible
-mgba_y_padding = 25 # Adds y pixels to the mGBA window height
+mgba_x_padding = 15 # Adds x pixels to the mGBA window width, "debug/mgba_region.png" is generated at script run time to help tune, make sure the entire mGBA window is visible
+mgba_y_padding = 60 # Adds y pixels to the mGBA window height
 mgba_controls = { # See list of keys - https://pyautogui.readthedocs.io/en/latest/keyboard.html#keyboard-keys
     "a": "x",
     "b": "z",
@@ -54,6 +54,8 @@ parser.add_argument('-m', action='store_true') # -m flag: set to Monitor/Manual 
 parser.add_argument('-b', action='store_true') # -b flag: set to battle wild pokemon until lead Pokemon is out of PP or HP
 parser.add_argument('-y', action='store_true') # -y flag: set to run/surf along the Y-axis (up and down until obstructed) # TODO add run between X/Y co-ords for areas without obstacles
 parser.add_argument('-x', action='store_true') # -x flag: set to run/surf along the X-axis (left and right until obstructed) # TODO add run between X/Y co-ords for areas without obstacles
+parser.add_argument('-c1', action='store', type=int)
+parser.add_argument('-c2', action='store', type=int)
 parser.add_argument('-f', action='store_true') # -f flag: set to use fishing rod - must be facing the water with the preferred rod registered to "select"
 parser.add_argument('-w', action='store_true') # -w flag: set to use sweet scent - first Pokemon in the part must have the move
 parser.add_argument('-t', action='store_true') # -t flag: set to soft reset for starter pokemon - must save and stand to the right of the bag, facing it
@@ -126,6 +128,11 @@ def key_sequence(sequence: list): # Function to run a sequence of keys to mGBA
             time.sleep(delay/mgba_speed)
         else:
             press_key(key)
+
+def release_keys(): # Release all mGBA keys
+    for key in mgba_controls.keys():
+        if isinstance(key, str):
+            pyautogui.keyUp(key)
 
 def walk_until_obstructed(direction: str, run: bool = False): # Function to run until player position stops changing
     if run:
@@ -441,37 +448,34 @@ def run_to_pos(run: bool = True, x: int = -1, y: int = -1, new_map_bank: int = -
         else:
             return True
 
-    verified = 0
+    stuck = 0
     player_info = get_player_info()
 
     if new_map_bank != -1 or new_map_id != -1:
-        while (player_info["mapBank"] != new_map_bank or player_info["mapId"] != new_map_id) and verified < 3:
+        while (player_info["mapBank"] != new_map_bank or player_info["mapId"] != new_map_id) and stuck < 1000:
             if not opponent_changed():
                 try:
                     player_info = get_player_info()
-                    if target_pos():
-                        verified += 1
-                    time.sleep(0.015/mgba_speed)
+                    target_pos()
+                    stuck += 1
                 except:
                     pass
             else:
+                pyautogui.keyUp(mgba_controls["b"])
                 return False
     else:
-        while player_info[axis] != end_pos and verified < 5:
+        while player_info[axis] != end_pos and stuck < 1000:
             if not opponent_changed():
                 try:
                     player_info = get_player_info()
-                    if target_pos():
-                        verified += 1
-                    time.sleep(0.015/mgba_speed)
+                    target_pos()
+                    stuck += 1
                 except:
                     pass
             else:
                 return False
 
-    for direction in directions:
-        pyautogui.keyUp(direction)
-    pyautogui.keyUp(mgba_controls["b"])
+    release_keys()    
     return True
 
 def pokecenter(): # Experimental function to run to poke center and back for long exp grinding sessions
@@ -688,6 +692,8 @@ def identify_pokemon(starter: bool = False): # Loop to identify opponent pokemon
     if not starter: time.sleep(4/mgba_speed) # Wait for battle start animation + takes a few secs for player state to update
     else: time.sleep(0.5/mgba_speed)
 
+    release_keys()
+
     if starter:
         pokemon = get_party_info(1)
     else:
@@ -763,6 +769,11 @@ if bot_config["method"] == "Starters":
     battle_pokemon = "Run"
     rng_wait = 0.000
 
+if "Up/Down" in bot_config["method"]:
+    action_1, action_2 = mgba_controls["up"], mgba_controls["down"]
+elif "Left/Right" in bot_config["method"]:
+    action_1, action_2 = mgba_controls["left"], mgba_controls["right"]
+
 class WindowMgr:
     def find_window_wildcard(self, wildcard):
         self._handle = None
@@ -783,14 +794,13 @@ window_regexp = f"^mGBA.+?(?={mgba_version})"
 w.find_window_wildcard(window_regexp)
 w.set_foreground()
 w.get_rectangle()
-mgba_region = (w._rect[0],w._rect[1],(240*mgba_frame_size)+mgba_x_padding,(190*mgba_frame_size)+mgba_y_padding)
+mgba_region = (w._rect[0],w._rect[1],(240*mgba_frame_size)+mgba_x_padding,(160*mgba_frame_size)+mgba_y_padding)
 pyautogui.screenshot("debug/mgba_region.png", region=mgba_region)
 
 # 🔁 Main loop
 while True:
     if re.match(window_regexp, win32gui.GetWindowText(win32gui.GetForegroundWindow())): # Check if mGBA is the focused window
-        for key in mgba_controls.keys():
-            pyautogui.keyUp(key) # Release all mGBA keys
+        release_keys()
 
         if args.p: # Buy 10x pokeballs method
             while True: key_sequence([mgba_controls["a"], "1sec", mgba_controls["right"], mgba_controls["down"], mgba_controls["a"], "1sec", mgba_controls["a"], "0.8sec", mgba_controls["a"], "0.8sec", mgba_controls["a"]])
@@ -823,17 +833,18 @@ while True:
 
         # 🏃‍♂️🏄‍♂️ Running/surfing method
         if "Running/Surfing" in bot_config["method"]:
-            if "Up/Down" in bot_config["method"]:
-                action_1, action_2 = mgba_controls["up"], mgba_controls["down"]
-            elif "Left/Right" in bot_config["method"]:
-                action_1, action_2 = mgba_controls["left"], mgba_controls["right"]
-
             while opponent_changed() == False:
                 try:
-                    pyautogui.keyDown(mgba_controls["b"])
-                    walk_until_obstructed(action_1, run=False)
-                    walk_until_obstructed(action_2, run=False)
-                    pyautogui.keyUp(mgba_controls["b"])
+                    if (args.c1 != None) and (args.c2 != None):
+                        if "Up/Down" in bot_config["method"]:
+                            while not run_to_pos(y=args.c1, run=True): identify_pokemon()
+                            while not run_to_pos(y=args.c2, run=True): identify_pokemon()
+                        elif "Left/Right" in bot_config["method"]:
+                            while not run_to_pos(x=args.c1, run=True): identify_pokemon()
+                            while not run_to_pos(x=args.c2, run=True): identify_pokemon()
+                    else:
+                        walk_until_obstructed(action_1, run=True)
+                        walk_until_obstructed(action_2, run=True)
                 except:
                     pass
 
