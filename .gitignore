@@ -131,3 +131,6 @@ dmypy.json
 *Thumbs.db
 /debug/
 /debug/*
+/stats/player.json
+/stats/opponent.json
+/stats/party.json

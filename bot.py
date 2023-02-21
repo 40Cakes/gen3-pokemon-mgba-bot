@@ -335,11 +335,11 @@ def run_from_battle(): # Function to run from wild pokemon
 
     i = 0
     player_info = get_player_info()
-    while player_info["state"] != 80 and i < 50: # State 80 = overworld
+    while player_info["state"] != 80 and i < 10: # State 80 = overworld
         player_info = get_player_info()
         key_sequence([mgba_controls["b"], "0.05sec"])
         i += 1
-    if i >= 50:
+    if i >= 10:
         run_from_battle()
         return
 
